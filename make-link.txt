@@ -19,3 +19,5 @@ if not exist bin/Normal.dot  (lnw Templates/Normal.dot bin/Normal.dot )
 
 if not exist vbac.wsf (lnw Ariawase/vbac.wsf   vbac.wsf )
 
+if not exist bin/macro.ppt (lnw "D:\documents\03948\My Documents\macro.ppt" bin/macro.ppt)
+
