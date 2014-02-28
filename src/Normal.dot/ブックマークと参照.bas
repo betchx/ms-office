@@ -149,6 +149,7 @@ Function ブックマーク可能文字への変換(ByVal target As String) As String
 End Function
 
 
+' ブックマークの開始と終了を修正
 Sub ブックマークの範囲を編集()
    ブックマーク範囲の編集.Show vbModeless
 End Sub
