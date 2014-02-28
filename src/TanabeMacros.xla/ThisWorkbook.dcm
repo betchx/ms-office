@@ -1,0 +1,42 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "ThisWorkbook"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = True
+Option Explicit
+
+Private Sub Workbook_AddinInstall()
+
+End Sub
+
+Private Sub Workbook_AddinUninstall()
+    ツールバー削除
+End Sub
+
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+'    ツールバー削除
+End Sub
+
+Private Sub Workbook_Open()
+
+End Sub
+
+
+Private Sub ツールバー削除()
+
+Dim cb As CommandBar
+
+For Each cb In Application.CommandBars
+   
+   If Left(cb.NameLocal, 3) = "AT-" Then
+'      Debug.Print cb.NameLocal
+     cb.Delete
+   End If
+
+Next cb
+
+End Sub
