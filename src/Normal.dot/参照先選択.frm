@@ -34,7 +34,7 @@ Private Sub CommandButton2_Click()
  Unload Me
 End Sub
 
-
+' 相互参照を入力する
 Private Sub Apply(Optional ByVal 図表参照スタイル設定 As Boolean = True)
     Dim i As Integer
     Dim a As Boolean, b As Boolean
@@ -53,6 +53,8 @@ Private Sub Apply(Optional ByVal 図表参照スタイル設定 As Boolean = True)
                 SeparateNumbers:=False, _
                 SeparatorString:=" "
         Else
+            Dim fld As Field
+            
             Selection.InsertCrossReference ReferenceType:="ブックマーク", ReferenceKind:= _
                 wdNumberNoContext, ReferenceItem:=names(posName, i), _
                 InsertAsHyperlink:=True, _
@@ -64,18 +66,23 @@ Private Sub Apply(Optional ByVal 図表参照スタイル設定 As Boolean = True)
             a = Right(tag, 1) = ")"
             b = InStr("123456789", head) > 0
             If a And b Then
+                ' 右肩カッコ形式の参考文献引用 (土論など)
                 Selection.MoveLeft Unit:=wdCharacter, Count:=1, Extend:=wdExtend
                 Selection.Font.Superscript = True
-                Selection.MoveRight Unit:=wdCharacter, Count:=1
             ElseIf head = "図" Or head = "表" Then
-                Selection.MoveLeft Unit:=wdCharacter, Count:=1, Extend:=wdExtend
-                
-                Call 図表参照確認
-                
-                If 図表参照スタイル設定 Then Selection.Style = "図表参照"
-                Selection.MoveRight Unit:=wdCharacter, Count:=1
-                Selection.Font.Reset
+                If 図表参照スタイル設定 Then
+                  Call 図表参照確認
+                   Selection.MoveLeft Unit:=wdCharacter, Count:=1, Extend:=wdExtend
+                   Selection.Style = "図表参照"
+                   Selection.Characters.Last.Font.Reset
+                   Selection.InsertAfter " "
+                   Selection.InsertBefore "QUOTE "
+                   Selection.Characters.First.Font.Reset
+                   Selection.Fields.Add(Selection.Range, wdFieldEmpty, , False).Select
+                   Selection.Fields.Update
+                End If
             End If
+            Selection.Collapse wdCollapseEnd
         End If
     End If
 
