@@ -315,7 +315,7 @@ Private Sub AddBookmarkAndApply()
   ListBox1.List(i, 1) = tag
   
    n = ActiveDocument.Bookmarks.Count
-   ReDim Preserve names(3, n - 1)
+   ReDim Preserve names(posStart + 1, n - 1)
    names(posTag, n - 1) = Data(1)
    names(posName, n - 1) = tag
    names(posStart, n - 1) = Data(3)
