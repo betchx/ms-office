@@ -118,7 +118,7 @@ Private Sub 選択範囲内の図を幅でスケール(mm As Single)
     Case wdSelectionNormal
         For Each p In Selection.Paragraphs
             Set r = p.Range
-            If r.ShapeRange.Count > 0 Then
+            If シェープあり(r) Then
                 For Each i In r.ShapeRange
                     Top = i.Top
                     Left = i.Left
@@ -128,8 +128,12 @@ Private Sub 選択範囲内の図を幅でスケール(mm As Single)
                     i.Left = Left
                 Next i
             End If
+            On Error GoTo 0
             If r.InlineShapes.Count > 0 Then
+                Dim ils As InlineShape
                 For Each i In p.Range.InlineShapes
+                    Set ils = i
+                    ils.Reset
                     i.ScaleHeight = s / i.Width * 100
                     i.Width = s
                 Next i
@@ -137,6 +141,17 @@ Private Sub 選択範囲内の図を幅でスケール(mm As Single)
         Next p
     End Select
 End Sub
+
+Private Function シェープあり(r As Range) As Boolean
+  On Error GoTo eee:
+  If r.ShapeRange.Count > 0 Then
+    シェープあり = True
+  End If
+  Exit Function
+eee:
+  シェープあり = False
+End Function
+
 
 Private Sub 選択範囲内の図を高さでスケール(mm As Single)
     Dim s
