@@ -28,7 +28,13 @@ Sub メインリストのリセット()
     メインリストリセットレベル9
     
     ' リストのリセット
-    ActiveDocument.Content.ListFormat.ApplyListTemplate ListTemplate:=MainList()
+    Dim s As String
+    Selection.Collapse
+    s = Selection.Style
+    Selection.Range.Style = wdStyleHeading1
+    Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+    Selection.Range.Style = s
+    'ActiveDocument.Content.ListFormat.ApplyListTemplate ListTemplate:=MainList()
 End Sub
 
 Sub メインリストリセットレベル1()
