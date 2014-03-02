@@ -1,3 +1,4 @@
 .gitignore encoding=UTF-8
 *.bas encoding=Shift-JIS
 *.frm encoding=Shift-JIS
+*.dot encoding=UTF-8
