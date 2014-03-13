@@ -110,7 +110,7 @@ Private Sub 選択範囲内の図を幅でスケール(mm As Single)
         Next
     Case wdSelectionInlineShape
         For Each i In Selection.InlineShapes
-            i.ScaleWidth = 1
+            i.ScaleWidth = 100
             rate = s / i.Width * 100#
             i.ScaleHeight = rate
             i.Width = s
