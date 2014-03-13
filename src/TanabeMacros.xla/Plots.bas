@@ -990,7 +990,7 @@ eee:
 End Sub
 
 
-Sub AddGraph()
+Private Sub AddGraph()
 '
 ' AddGraph Macro
 ' マクロ記録日 : 2011/1/27  ユーザー名 : 田辺
