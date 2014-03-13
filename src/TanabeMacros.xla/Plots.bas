@@ -1207,9 +1207,7 @@ Sub グラフY軸ラベル回転()
 '
 ' グラフY軸ラベル回転 Macro
 ' マクロ記録日 : 2012/2/5  ユーザー名 : -
-'
-' Keyboard Shortcut: Ctrl+Shift+R
-'
+
     On Error Resume Next
     ActiveChart.Axes(xlValue).AxisTitle.Orientation = xlHorizontal
 End Sub
@@ -1272,9 +1270,7 @@ Attribute kiloRangeY.VB_ProcData.VB_Invoke_Func = " \n14"
 '
 ' kiloRangeY Macro
 ' マクロ記録日 : 2011/4/7  ユーザー名 : 田辺
-'
-' Keyboard Shortcut: Ctrl+Shift+K
-'
+
     With ActiveChart.Axes(xlValue)
         .DisplayUnit = xlThousands
         .HasDisplayUnitLabel = False
