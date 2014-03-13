@@ -2042,7 +2042,7 @@ Sub copy_and_change_data_column()
   
   ' Validation
   If ori Is Nothing Then Exit Sub
-  If ori.Chart.SeriesCollection.count <> 1 Then Exit Sub
+  If ori.Chart.SeriesCollection.Count <> 1 Then Exit Sub
   
   ori.Copy
   Set TL = ori.TopLeftCell
@@ -2097,7 +2097,7 @@ Sub use_current_sheet_data()
   
   ' Validation
   If co Is Nothing Then Exit Sub
-  If co.Chart.SeriesCollection.count <> 1 Then Exit Sub
+  If co.Chart.SeriesCollection.Count <> 1 Then Exit Sub
   
   ' Change sheet name
   Dim s As Series
