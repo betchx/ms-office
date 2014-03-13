@@ -1019,12 +1019,14 @@ End Function
 Sub A4用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  ActiveWindow.Selection.Font.Size = 9
-  ActiveWindow.Selection.AutoScaleFont = False
-  ActiveWindow.Selection.Parent.Parent.Width = mm2pnt(170)
-  ActiveWindow.Selection.Parent.Parent.Height = mm2pnt(105)
-  ActiveWindow.Selection.Parent.Parent.Placement = フロート配置設定()
-  ActiveWindow.Selection.Border.LineStyle = 0
+  With GetChart(Selection)
+    .Font.Size = 9
+    .AutoScaleFont = False
+    .Parent.Parent.Width = mm2pnt(170)
+    .Parent.Parent.Height = mm2pnt(105)
+    .Parent.Parent.Placement = フロート配置設定()
+    .Border.LineStyle = 0
+  End With
 eee:
   Application.ScreenUpdating = True
 End Sub
@@ -1032,12 +1034,14 @@ End Sub
 Sub グラフシート4分割用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  ActiveWindow.Selection.Font.Size = 8
-  ActiveWindow.Selection.AutoScaleFont = False
-  ActiveWindow.Selection.Parent.Parent.Width = mm2pnt(125)
-  ActiveWindow.Selection.Parent.Parent.Height = mm2pnt(78.5)
-  ActiveWindow.Selection.Parent.Parent.Placement = フロート配置設定()
-  ActiveWindow.Selection.Border.LineStyle = 0
+  With GetChart(Selection)
+    .Font.Size = 8
+    .AutoScaleFont = False
+    .Parent.Parent.Width = mm2pnt(125)
+    .Parent.Parent.Height = mm2pnt(78.5)
+    .Parent.Parent.Placement = フロート配置設定()
+    .Border.LineStyle = 0
+  End With
 eee:
   Application.ScreenUpdating = True
 End Sub
@@ -1045,12 +1049,14 @@ End Sub
 Sub A4で縦3段用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  ActiveWindow.Selection.Font.Size = 9
-  ActiveWindow.Selection.AutoScaleFont = False
-  ActiveWindow.Selection.Parent.Parent.Width = mm2pnt(170)
-  ActiveWindow.Selection.Parent.Parent.Height = 210 'pt
-  ActiveWindow.Selection.Parent.Parent.Placement = フロート配置設定()
-  ActiveWindow.Selection.Border.LineStyle = 0
+  With GetChart(Selection)
+    .Font.Size = 9
+    .AutoScaleFont = False
+    .Parent.Parent.Width = mm2pnt(170)
+    .Parent.Parent.Height = 210 'pt
+    .Parent.Parent.Placement = フロート配置設定()
+    .Border.LineStyle = 0
+  End With
 eee:
   Application.ScreenUpdating = True
 End Sub
@@ -1059,12 +1065,14 @@ End Sub
 Sub A4用紙2段組用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  ActiveWindow.Selection.Font.Size = 18
-  ActiveWindow.Selection.AutoScaleFont = False
-  ActiveWindow.Selection.Parent.Parent.Width = mm2pnt(160)
-  ActiveWindow.Selection.Parent.Parent.Height = mm2pnt(99)
-  ActiveWindow.Selection.Parent.Parent.Placement = フロート配置設定()
-  ActiveWindow.Selection.Border.LineStyle = 0
+  With GetChart(Selection)
+    .Font.Size = 18
+    .AutoScaleFont = False
+    .Parent.Parent.Width = mm2pnt(160)
+    .Parent.Parent.Height = mm2pnt(99)
+    .Parent.Parent.Placement = フロート配置設定()
+    .Border.LineStyle = 0
+  End With
 eee:
   Application.ScreenUpdating = True
 End Sub
@@ -1073,12 +1081,14 @@ End Sub
 Sub A3用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  ActiveWindow.Selection.Font.Size = 9
-  ActiveWindow.Selection.AutoScaleFont = False
-  ActiveWindow.Selection.Parent.Parent.Width = mm2pnt(210)
-  ActiveWindow.Selection.Parent.Parent.Height = mm2pnt(170)
-  ActiveWindow.Selection.Parent.Parent.Placement = フロート配置設定()
-  ActiveWindow.Selection.Border.LineStyle = 0
+  With GetChart(Selection)
+    .Font.Size = 9
+    .AutoScaleFont = False
+    .Parent.Parent.Width = mm2pnt(210)
+    .Parent.Parent.Height = mm2pnt(170)
+    .Parent.Parent.Placement = フロート配置設定()
+    .Border.LineStyle = 0
+  End With
 eee:
   Application.ScreenUpdating = True
 End Sub
@@ -1991,3 +2001,143 @@ eee:
     Application.ScreenUpdating = True
 
 End Sub
+
+
+
+
+Private Function GetChart(ByRef arg As Object) As Chart
+  Dim o As Object
+  Set o = arg
+  Set GetChart = Nothing
+  Do Until (TypeName(o) = "Application")
+    If TypeName(o) = "Chart" Then
+      Set GetChart = o
+      Exit Function
+    End If
+    Set o = o.Parent
+  Loop
+
+End Function
+
+Private Function GetChartObject(ByRef arg As Object) As ChartObject
+  Dim o As Object
+  Set o = arg
+  Set GetChartObject = Nothing
+  Do Until (TypeName(o) = "Application")
+    If TypeName(o) = "ChartObject" Then
+      Set GetChartObject = o
+      Exit Function
+    End If
+    Set o = o.Parent
+  Loop
+
+End Function
+
+
+
+Sub copy_and_change_data_column()
+  Dim co As ChartObject, ori As ChartObject
+  Dim sht As Worksheet
+  Dim r As Range, TL As Range, BR As Range
+  
+  ' Copy Selected Chart
+  Set sht = ActiveSheet
+  Set ori = GetChartObject(Selection)
+  
+  ' Validation
+  If ori Is Nothing Then Exit Sub
+  If ori.Chart.SeriesCollection.count <> 1 Then Exit Sub
+  
+  ori.Copy
+  Set TL = ori.TopLeftCell
+  Set BR = ori.BottomRightCell
+  sht.Cells(BR.row, TL.Column).Select
+  sht.Paste
+  Set co = GetChartObject(Selection)
+  co.Top = ori.Top + ori.Height
+  co.Left = ori.Left
+  
+  ' move to right column
+  Dim s As Series
+  Set s = co.Chart.SeriesCollection(1)
+  Dim fm As String
+  fm = s.FormulaR1C1
+  Dim a, b, c, d, e, f, g
+  a = Split(fm, ",")
+  
+  b = Split(a(2), "!")
+  c = Split(b(1), ":")
+  d = Split(c(0), "C")
+  e = Split(c(1), "C")
+  
+  d(1) = Format(val(d(1)) + 1, "0")
+  e(1) = Format(val(e(1)) + 1, "0")
+  
+  c(1) = Join(e, "C")
+  c(0) = Join(d, "C")
+  b(1) = Join(c, ":")
+  a(2) = Join(b, "!")
+  
+  ' change caption
+  f = Split(a(0), "!")
+  g = Split(f(1), "C")
+  g(1) = Format(val(g(1)) + 1, "0")
+  f(1) = Join(g, "C")
+  a(0) = Join(f, "!")
+  
+  s.FormulaR1C1 = Join(a, ",")
+
+End Sub
+
+
+Sub use_current_sheet_data()
+  Dim co As ChartObject, ori As ChartObject
+  Dim sht As Worksheet
+  Dim r As Range, TL As Range, BR As Range
+  
+  ' Copy Selected Chart
+  Set sht = ActiveSheet
+  Set co = GetChartObject(Selection)
+  
+  ' Validation
+  If co Is Nothing Then Exit Sub
+  If co.Chart.SeriesCollection.count <> 1 Then Exit Sub
+  
+  ' Change sheet name
+  Dim s As Series
+  Set s = co.Chart.SeriesCollection(1)
+  Dim fm As String
+  fm = s.FormulaR1C1
+  Dim a, b, c, d, e, f, g
+  a = Split(fm, ",")
+  b = Split(a(0), "(")
+  c = Split(b(1), "!")
+  c(0) = "'" & sht.name & "'"
+  b(1) = Join(c, "!")
+  a(0) = Join(b, "(")
+  
+  d = Split(a(1), "!")
+  d(0) = c(0)
+  a(1) = Join(d, "!")
+  
+  e = Split(a(2), "!")
+  e(0) = c(0)
+  a(2) = Join(e, "!")
+  
+  s.FormulaR1C1 = Join(a, ",")
+  
+  co.Chart.ChartTitle.Text = sht.name
+  
+  'exit sub
+  Dim num As Integer
+  num = sht.Range("A1").End(xlToRight).Column - 2
+  Dim i
+  For i = 1 To num
+    Call copy_and_change_data_column
+  Next
+  co.Activate
+  co.Select True
+  co.Copy
+End Sub
+
+
