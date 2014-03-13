@@ -924,6 +924,14 @@ Sub グラフの基本設定(Optional 色設定実行 As Boolean = True)
 
 Dim str As String
 Dim a As Axis
+Dim General As String
+
+' バージョンにより，指定すべきものが違う
+If Application.Version <= "11.0" Then
+  General = "General"
+Else
+  General = "G/標準"
+End If
 
 On Error GoTo eee
 Application.ScreenUpdating = False
@@ -932,13 +940,13 @@ Application.ScreenUpdating = False
     With a
       If Not .HasTitle Then X軸キャプション設定
       .TickLabelPosition = xlTickLabelPositionLow
-      .TickLabels.NumberFormatLocal = "General"
+      .TickLabels.NumberFormatLocal = General
     End With
     Set a = ActiveChart.Axes(xlValue)
     With a
       If Not .HasTitle Then Y軸キャプション設定
       .TickLabelPosition = xlTickLabelPositionLow
-      .TickLabels.NumberFormatLocal = "General"
+      .TickLabels.NumberFormatLocal = General
     End With
     
     Call グラフの背景なしに
