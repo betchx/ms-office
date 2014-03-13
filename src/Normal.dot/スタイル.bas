@@ -12,32 +12,35 @@ End Sub
 Public Function MainList() As ListTemplate
 ' テンプレートの番号が3なのは意味がある模様．
 ' どうやら0,1,2は章立てではなく，レベル有の箇条書き用に予約されている模様
-Set MainList = Application.ListGalleries(wdOutlineNumberGallery).ListTemplates(3)
+    'Set MainList = Application.ListGalleries(wdOutlineNumberGallery).ListTemplates(3)
+    
+    ' 見出し 1 でつかっているテンプレートを返す様に変更してみた． 2013/3/5
+    Set MainList = ActiveDocument.Styles("見出し 1").ListTemplate
 End Function
 
 
 Sub メインリストのリセット()
-    メインリストリセットレベル1
-    メインリストリセットレベル2
-    メインリストリセットレベル3
-    メインリストリセットレベル4
-    メインリストリセットレベル5
-    メインリストリセットレベル6
-    メインリストリセットレベル7
-    メインリストリセットレベル8
-    メインリストリセットレベル9
+    メインリストリセットレベル1 単独更新:=False
+    メインリストリセットレベル2 単独更新:=False
+    メインリストリセットレベル3 単独更新:=False
+    メインリストリセットレベル4 単独更新:=False
+    メインリストリセットレベル5 単独更新:=False
+    メインリストリセットレベル6 単独更新:=False
+    メインリストリセットレベル7 単独更新:=False
+    メインリストリセットレベル8 単独更新:=False
+    メインリストリセットレベル9 単独更新:=False
     
     ' リストのリセット
     Dim s As String
     Selection.Collapse
     s = Selection.Style
-    Selection.Range.Style = wdStyleHeading1
+    Selection.Range.Style = "見出し 1"
     Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
     Selection.Range.Style = s
     'ActiveDocument.Content.ListFormat.ApplyListTemplate ListTemplate:=MainList()
 End Sub
 
-Sub メインリストリセットレベル1()
+Sub メインリストリセットレベル1(Optional 単独更新 As Boolean = True)
     With MainList().ListLevels(1)
         .NumberFormat = "%1."
         .TrailingCharacter = wdTrailingSpace
@@ -68,11 +71,20 @@ Sub メインリストリセットレベル1()
             .name = "Alial"
         End With
         .LinkedStyle = "見出し 1"
-        ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=1
+        If 単独更新 Then
+          ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=1
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
 End Sub
 
- Sub メインリストリセットレベル2()
+ Sub メインリストリセットレベル2(Optional 単独更新 As Boolean = True)
     With MainList().ListLevels(2)
         .NumberFormat = "%1.%2"
         .TrailingCharacter = wdTrailingSpace
@@ -103,11 +115,20 @@ End Sub
             .name = ""
         End With
         .LinkedStyle = "見出し 2"
+        If 単独更新 Then
         ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=2
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
 End Sub
 
- Sub メインリストリセットレベル3()
+ Sub メインリストリセットレベル3(Optional 単独更新 As Boolean = True)
     With MainList().ListLevels(3)
         .NumberFormat = "%1.%2.%3"
         .TrailingCharacter = wdTrailingSpace
@@ -138,11 +159,20 @@ End Sub
             .name = ""
         End With
         .LinkedStyle = "見出し 3"
+        If 単独更新 Then
         ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=3
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
 End Sub
 
- Sub メインリストリセットレベル4()
+ Sub メインリストリセットレベル4(Optional 単独更新 As Boolean = True)
     With MainList().ListLevels(4)
         .NumberFormat = "(%4)"
         .TrailingCharacter = wdTrailingSpace
@@ -173,12 +203,21 @@ End Sub
             .name = ""
         End With
         .LinkedStyle = "見出し 4"
-        ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=4
+         If 単独更新 Then
+           ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=4
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
     
 End Sub
 
- Sub メインリストリセットレベル5()
+ Sub メインリストリセットレベル5(Optional 単独更新 As Boolean = True)
     
     With MainList().ListLevels(5)
         .NumberFormat = "%5)"
@@ -210,12 +249,21 @@ End Sub
             .name = ""
         End With
         .LinkedStyle = "見出し 5"
+        If 単独更新 Then
         ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=5
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
 End Sub
 
 '図
- Sub メインリストリセットレベル6()
+ Sub メインリストリセットレベル6(Optional 単独更新 As Boolean = True)
     With MainList().ListLevels(6)
         .NumberFormat = "図%6"
         .TrailingCharacter = wdTrailingNone
@@ -246,10 +294,19 @@ End Sub
             .name = ""
         End With
         .LinkedStyle = "図"
+        If 単独更新 Then
         ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=6
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
 End Sub
- Sub メインリストリセットレベル7()
+ Sub メインリストリセットレベル7(Optional 単独更新 As Boolean = True)
     With MainList().ListLevels(7)
         .NumberFormat = "表%7"
         .TrailingCharacter = wdTrailingNone
@@ -280,11 +337,20 @@ End Sub
             .name = ""
         End With
         .LinkedStyle = "表"
+        If 単独更新 Then
         ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=7
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
 End Sub
 
- Sub メインリストリセットレベル8()
+ Sub メインリストリセットレベル8(Optional 単独更新 As Boolean = True)
 With MainList().ListLevels(8)
         .NumberFormat = "(%8)"
         .TrailingCharacter = wdTrailingNone
@@ -315,10 +381,19 @@ With MainList().ListLevels(8)
             .name = ""
         End With
         .LinkedStyle = "図副題"
+        If 単独更新 Then
         ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=8
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
 End Sub
- Sub メインリストリセットレベル9()
+ Sub メインリストリセットレベル9(Optional 単独更新 As Boolean = True)
     With MainList().ListLevels(9)
         .NumberFormat = "%9"
         .TrailingCharacter = wdTrailingNone
@@ -349,7 +424,16 @@ End Sub
             .name = ""
         End With
         .LinkedStyle = "列挙"
+        If 単独更新 Then
         ActiveDocument.Styles(.LinkedStyle).LinkToListTemplate ListTemplate:=MainList(), ListLevelNumber:=9
+            ' リストのリセット
+            Dim s As String
+            Selection.Collapse
+            s = Selection.Style
+            Selection.Range.Style = .LinkedStyle
+            Selection.Range.ListFormat.ApplyListTemplate MainList(), , wdListApplyToWholeList, wdWord9ListBehavior
+            Selection.Range.Style = s
+            End If
     End With
 End Sub
 
