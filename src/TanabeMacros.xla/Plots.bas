@@ -1019,7 +1019,8 @@ End Function
 Sub A4用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  With GetChart(Selection)
+  With GetChart(Selection).ChartArea
+  
     .Font.Size = 9
     .AutoScaleFont = False
     .Parent.Parent.Width = mm2pnt(170)
@@ -1034,7 +1035,7 @@ End Sub
 Sub グラフシート4分割用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  With GetChart(Selection)
+  With GetChart(Selection).ChartArea
     .Font.Size = 8
     .AutoScaleFont = False
     .Parent.Parent.Width = mm2pnt(125)
@@ -1049,7 +1050,7 @@ End Sub
 Sub A4で縦3段用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  With GetChart(Selection)
+  With GetChart(Selection).ChartArea
     .Font.Size = 9
     .AutoScaleFont = False
     .Parent.Parent.Width = mm2pnt(170)
@@ -1065,7 +1066,7 @@ End Sub
 Sub A4用紙2段組用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  With GetChart(Selection)
+  With GetChart(Selection).ChartArea
     .Font.Size = 18
     .AutoScaleFont = False
     .Parent.Parent.Width = mm2pnt(160)
@@ -1081,7 +1082,7 @@ End Sub
 Sub A3用にサイズ変更()
   On Error GoTo eee
   Application.ScreenUpdating = False
-  With GetChart(Selection)
+  With GetChart(Selection).ChartArea
     .Font.Size = 9
     .AutoScaleFont = False
     .Parent.Parent.Width = mm2pnt(210)
@@ -1997,7 +1998,6 @@ eee:
     Application.ScreenUpdating = True
 
 End Sub
-
 
 
 
