@@ -1,0 +1,23 @@
+
+
+rem Create hardlink by using lnw.exe in this directory
+rem The lnw.exe (original name is ln.exe. it was renamed to avoid conflicting with msys's ln.exe) was taken from http://homepage1.nifty.com/emk/#download_symlink
+rem    Documentation (Japanese) was avilable at  http://homepage1.nifty.com/emk/symlink.html#symlink-access 
+rem The lnw.exe is required for Windows XP, because fsutil.exe (made by MS) requires Administrator privileges even though creatin hardlink does not required it.
+rem If using Windows Vista and later version, "mklink /H " can be used to create hardlink without Adiministrator privileges.
+
+rem このフォルダにあるlnw.exeを使って対象のハードリンクを作成します．
+rem lnw.exeは http://homepage1.nifty.com/emk/#download_symlinkからダウンロードしたもので，もともとはln.exeですが，msysのlnと競合するので名前を変更しています．
+rem  lnw.exe(ln.exe)のドキュメントは http://homepage1.nifty.com/emk/symlink.html#symlink-access  にあります．
+rem lnw.exeを用いているのは，WindowsXPでのハードリンク作成には本来管理者権限は不要ですが，MS製のツール fsutil.exe が管理者権限を要求するためです．
+rem Windows Vista以降であれば管理者権限がなくとも mklink /H で作成可能です．
+
+
+if not exist bin/TanabeMacros.xla ( lnw AddIns/TanabeMacros.xla  bin/TanabeMacros.xla )
+
+if not exist bin/Normal.dot  (lnw Templates/Normal.dot bin/Normal.dot )
+
+if not exist vbac.wsf (lnw Ariawase/vbac.wsf   vbac.wsf )
+
+if not exist bin/macro.ppt (lnw "D:\documents\03948\My Documents\macro.ppt" bin/macro.ppt)
+
