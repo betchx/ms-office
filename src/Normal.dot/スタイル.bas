@@ -10,12 +10,16 @@ Sub 段落前で改ページのトグル()
 End Sub
 
 Public Function MainList() As ListTemplate
-' テンプレートの番号が3なのは意味がある模様．
-' どうやら0,1,2は章立てではなく，レベル有の箇条書き用に予約されている模様
-    'Set MainList = Application.ListGalleries(wdOutlineNumberGallery).ListTemplates(3)
     
     ' 見出し 1 でつかっているテンプレートを返す様に変更してみた． 2013/3/5
     Set MainList = ActiveDocument.Styles("見出し 1").ListTemplate
+    If MainList Is Nothing Then
+    
+      ' テンプレートの番号が3なのは意味がある模様．
+      ' どうやら0,1,2は章立てではなく，レベル有の箇条書き用に予約されている模様
+      Set MainList = Application.ListGalleries(wdOutlineNumberGallery).ListTemplates(3)
+    End If
+
 End Function
 
 
