@@ -75,13 +75,13 @@ Private Sub 設定反映()
 End Sub
 
 Private Sub 表のスタイル設定(ByVal 元 As String)
-  スタイルコピー 元, "表"
+  スタイルの内容をコピー 元, "表"
   ActiveDocument.Styles("表").BaseStyle = 元
   ActiveDocument.Styles("表").NextParagraphStyle = "表本体"
 End Sub
 
 Private Sub 図のスタイル設定(ByVal 元 As String)
-  スタイルコピー 元, "図"
+  スタイルの内容をコピー 元, "図"
   ActiveDocument.Styles("図").BaseStyle = 元
   ActiveDocument.Styles("図").NextParagraphStyle = "本文"
 End Sub
