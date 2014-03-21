@@ -13,6 +13,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
 Private Const リストの番号部の幅 As Single = 60  '32
 Private Const リストのブックマーク名の幅 As Single = 150
 Private Const 内容表示文字数 As Integer = 100
@@ -85,6 +87,8 @@ Private Sub Apply(Optional ByVal 図表参照スタイル設定 As Boolean = True)
             Selection.Collapse wdCollapseEnd
         End If
     End If
+    
+
 
 End Sub
 
@@ -206,7 +210,7 @@ Private Function 新ブックマーク名の取得_OLD(old_name As String) As String
     Dim res As VbMsgBoxResult
     
     typed_name = old_name
-    新ブックマーク名の取得 = ""  ' キャンセルした場合
+    新ブックマーク名の取得_OLD = ""  ' キャンセルした場合
     
     Do
     
@@ -230,7 +234,7 @@ Private Function 新ブックマーク名の取得_OLD(old_name As String) As String
         
     Loop Until res = vbYes
     
-    新ブックマーク名の取得 = new_name
+    新ブックマーク名の取得_OLD = new_name
 
 End Function
 
@@ -286,8 +290,12 @@ Private Sub 説明文記入()
 End Sub
 
 
-Private Sub AddBookmarkAndApply()
+
+
+Private Sub AddBookmark()
   Dim Data(0 To 4)
+  Dim i As Integer, n As Integer
+  
   With Me.ListBoxCaptions
     If IsNull(.Value) Then Exit Sub
     For i = 0 To 4
@@ -321,12 +329,20 @@ Private Sub AddBookmarkAndApply()
    names(posStart, n - 1) = Data(3)
    names(posValue, n - 1) = Left(r.text, 内容表示文字数)
   
+   
+End Sub
+
+Private Sub AddBookmarkAndApply()
+  
+  AddBookmark
   Apply
   
 End Sub
 
 Private Sub ListBoxCaptions_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
-  AddBookmarkAndApply
+  AddBookmark ' AndApply
+   Call ブックマークリスト更新
+   ListBoxStyle_Change
 End Sub
 
 
@@ -336,6 +352,8 @@ Private Sub ListBoxCaptions_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVa
     Case vbKeyReturn
         AddBookmarkAndApply
         If Shift = 0 Then Unload Me
+        Call ブックマークリスト更新
+        ListBoxStyle_Change
     Case vbKeySpace, 229
         With ListBoxCaptions
             If Shift = 1 And .ListIndex > 0 Then
@@ -400,8 +418,10 @@ Private Sub ListBoxStyle_Change()
         Me.ListBoxCaptions.Clear
         Exit Sub
     End If
+    
     Dim Data()
     ReDim Data(c.Count() - 1, 3)
+    Dim k As Integer
     For i = 0 To c.Count - 1
       For k = 0 To 3
         Data(i, k) = c(i + 1)(k)
@@ -414,9 +434,7 @@ eee:
 
 End Sub
 
-
-
-Private Sub UserForm_Initialize()
+Private Sub ブックマークリスト更新()
    Dim n
    Dim pos()
    Dim arr As New ArrayList
@@ -424,11 +442,6 @@ Private Sub UserForm_Initialize()
    Dim tag As String
    Dim b As Bookmark
    Dim bs As Bookmarks
-   
-   continue_flag = False
-     
-   Call 説明文記入
-   
    
    Set bs = ActiveDocument.Bookmarks
    n = ActiveDocument.Bookmarks.Count
@@ -483,6 +496,18 @@ Private Sub UserForm_Initialize()
    Else
      Me.ListBoxStyle.SetFocus
    End If
+
+End Sub
+
+
+
+Private Sub UserForm_Initialize()
+   
+   continue_flag = False
+     
+   Call 説明文記入
+   
+   Call ブックマークリスト更新
    
    
    '' 参照用スタイルを設定
@@ -519,6 +544,7 @@ Private Sub UserForm_Initialize()
    Exit Sub
    
    '''' 以下はメモ
+   Dim used
    Set used = New Scripting.Dictionary
    Dim s_name, s As Style, para As Paragraph
    Dim c As Collection
@@ -526,6 +552,7 @@ Private Sub UserForm_Initialize()
       Set c = New Collection
       used.Add s.NameLocal, c
    Next
+   Dim i
    For i = 1 To ActiveDocument.Paragraphs.Count
      Set para = ActiveDocument.Paragraphs(i)
      s_name = para.Style.NameLocal
