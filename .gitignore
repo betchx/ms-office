@@ -81,6 +81,7 @@ src/*.dot/NewMacros.bas
 PowerPoint/PPT11.pcb
 Office/*.pip
 Office/*.acl
+Excel/*.xlb
 
 # ツールバーの情報があるので管理していたが，
 # Addin化すれば管理しなくてよいことが判明したため
