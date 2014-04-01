@@ -442,6 +442,99 @@ End Sub
 End Sub
 
 
+Private Sub 反転数式行追加()
+  On Error GoTo not_exist
+  If Application.IsObjectValid(ActiveDocument.Styles("反転数式行")) Then Exit Sub
+not_exist:
+  Dim textwidth As Single
+  With Selection.PageSetup
+    textwidth = .PageWidth - .LeftMargin - .RightMargin
+  End With
+  With ActiveDocument.Styles.Add("反転数式行", WdStyleType.wdStyleTypeParagraph)
+    .BaseStyle = "標準"
+    .ParagraphFormat.TabStops.Add textwidth * 0.5, WdTabAlignment.wdAlignTabCenter
+'    .ParagraphFormat.TabStops.Add textwidth, WdTabAlignment.wdAlignTabRight
+    .ParagraphFormat.SpaceAfter = .ParagraphFormat.LineSpacing
+    .ParagraphFormat.SpaceBefore = .ParagraphFormat.LineSpacing
+    .ParagraphFormat.ReadingOrder = wdReadingOrderRtl
+    .ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
+    .NoSpaceBetweenParagraphsOfSameStyle = True
+    .NextParagraphStyle = "本文"
+  End With
+End Sub
+
+ Sub レベル9を章番号付き数式行に()
+    Call 反転数式行追加
+    With MainList().ListLevels(9)
+        .NumberFormat = "(%1.%9)"
+        .TrailingCharacter = wdTrailingNone
+        .NumberStyle = wdListNumberStyleArabic
+        .NumberPosition = MillimetersToPoints(0)
+        .Alignment = wdListLevelAlignLeft
+        .TextPosition = MillimetersToPoints(0)
+        .TabPosition = MillimetersToPoints(0)
+        .ResetOnHigher = 1
+        .StartAt = 1
+        With .Font
+            .Bold = wdUndefined
+            .Italic = wdUndefined
+            .StrikeThrough = wdUndefined
+            .Subscript = wdUndefined
+            .Superscript = wdUndefined
+            .Shadow = wdUndefined
+            .Outline = wdUndefined
+            .Emboss = wdUndefined
+            .Engrave = wdUndefined
+            .AllCaps = wdUndefined
+            .Hidden = wdUndefined
+            .Underline = wdUndefined
+            .Color = wdUndefined
+            .Size = wdUndefined
+            .Animation = wdUndefined
+            .DoubleStrikeThrough = wdUndefined
+            .name = ""
+        End With
+        .LinkedStyle = "反転数式行"
+    End With
+End Sub
+
+ Sub レベル9を節番号付き数式行に()
+    Call 反転数式行追加
+    With MainList().ListLevels(9)
+        .NumberFormat = "(%1.%2.%9)"
+        .TrailingCharacter = wdTrailingNone
+        .NumberStyle = wdListNumberStyleArabic
+        .NumberPosition = MillimetersToPoints(0)
+        .Alignment = wdListLevelAlignLeft
+        .TextPosition = MillimetersToPoints(0)
+        .TabPosition = MillimetersToPoints(0)
+        .ResetOnHigher = 2
+        .StartAt = 1
+        With .Font
+            .Bold = wdUndefined
+            .Italic = wdUndefined
+            .StrikeThrough = wdUndefined
+            .Subscript = wdUndefined
+            .Superscript = wdUndefined
+            .Shadow = wdUndefined
+            .Outline = wdUndefined
+            .Emboss = wdUndefined
+            .Engrave = wdUndefined
+            .AllCaps = wdUndefined
+            .Hidden = wdUndefined
+            .Underline = wdUndefined
+            .Color = wdUndefined
+            .Size = wdUndefined
+            .Animation = wdUndefined
+            .DoubleStrikeThrough = wdUndefined
+            .name = ""
+        End With
+        .LinkedStyle = "反転数式行"
+    End With
+End Sub
+
+
+
 
 Sub スタイルの内容をコピー(ByVal 元 As String, ByVal 先 As String)
   Dim s As Style
@@ -542,4 +635,40 @@ Sub スタイルの内容をコピー(ByVal 元 As String, ByVal 先 As String)
   End With
 
 End Sub
+
+
+Sub 数式行スタイル確認()
+  On Error GoTo add_style:
+  Dim n
+  n = ActiveDocument.Styles("数式行").BuiltIn
+  Exit Sub
+
+add_style:
+  Dim textwidth As Single
+  With Selection.PageSetup
+    textwidth = .PageWidth - .LeftMargin - .RightMargin
+  End With
+  With ActiveDocument.Styles.Add("数式行", wdStyleTypeParagraph)
+    .ParagraphFormat.TabStops.Add textwidth * 0.5, WdTabAlignment.wdAlignTabCenter
+    .ParagraphFormat.TabStops.Add textwidth, WdTabAlignment.wdAlignTabRight
+    .ParagraphFormat.SpaceAfter = .ParagraphFormat.LineSpacing
+    .ParagraphFormat.SpaceBefore = .ParagraphFormat.LineSpacing
+'    .ParagraphFormat.ReadingOrder = wdReadingOrderRtl
+    .NextParagraphStyle = "本文"
+  End With
+End Sub
+
+Sub 数式行の挿入()
+
+  数式行スタイル確認
+
+  Selection.Paragraphs(1).Style = "数式行"
+
+  Selection.InsertBefore vbTab
+  Selection.Collapse wdCollapseEnd
+  Selection.InsertBefore vbTab & "( )"
+  ActiveDocument.Fields.Add ActiveDocument.Range(Selection.Range.End - 2, Selection.Range.End - 1), wdFieldListNum, "Main \l 9"
+  Selection.Collapse wdCollapseStart
+End Sub
+
 
