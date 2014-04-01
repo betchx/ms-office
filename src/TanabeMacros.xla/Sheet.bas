@@ -718,3 +718,38 @@ End Sub
 '    Application.MoveAfterReturnDirection = xlUp
 '    Application.MoveAfterReturnDirection = xlToLeft
 '    Application.MoveAfterReturnDirection = xlDown
+
+
+Public Function SheetPageCount(sheet_name) As Integer
+
+Application.Volatile
+Dim sh As Worksheet
+Dim n As String
+
+SheetPageCount = 0
+Select Case TypeName(sheet_name)
+Case "String"
+  n = sheet_name
+Case "Range"
+  n = sheet_name.Value
+End Select
+If n = "" Then Exit Function
+Set sh = ThisWorkbook.Sheets(n)
+Dim pas
+pas = Split(sh.PageSetup.PrintArea, ":")
+Dim top_row, bottom_row
+top_row = Split(pas(0), "$")(2)
+bottom_row = Split(pas(1), "$")(2)
+
+Dim hb As HPageBreak
+
+SheetPageCount = 1
+For Each hb In sh.HPageBreaks
+   If hb.Location.row > top_row And hb.Location.row < bottom_row Then
+     SheetPageCount = SheetPageCount + 1
+   End If
+Next
+'SheetPageCount = sh.HPageBreaks.Count + 1
+
+End Function
+
