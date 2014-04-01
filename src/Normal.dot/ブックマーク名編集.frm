@@ -16,17 +16,14 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public 結果 As String
-Public 候補 As String
 
 Private Sub cbCancel_Click()
    結果 = ""
-   候補 = ""
    Me.Hide
 End Sub
 
 Private Sub cbOK_Click()
     結果 = TextBox1.text
-    候補 = ""
     Me.Hide
 End Sub
 
@@ -54,6 +51,9 @@ Private Sub UserForm_Initialize()
 "最大20文字です．スペース等は使えません．" & vbCrLf & _
 "その他の使用できない文字は全角に変換されます．"
 
+End Sub
+
+Sub 候補設定(Optional 候補 As String = "")
 '"ブックマークは最大20文字までで，数字から始まることはできません．" & vbCrLf & _
 '"また，改行やスペース（半角全角とも）と次の半角文字は使用できません： ()-?.,/!*%#'=^~\|"
   If 候補 = "" Then
@@ -63,6 +63,6 @@ Private Sub UserForm_Initialize()
       候補 = ブックマーク可能文字への変換(Selection.text)
     End If
   End If
-    TextBox1.text = ブックマーク可能文字への変換(候補)
+  TextBox1.text = ブックマーク可能文字への変換(候補)
   TextBox1.SetFocus
 End Sub

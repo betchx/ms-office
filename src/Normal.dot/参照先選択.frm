@@ -175,6 +175,7 @@ Private Sub ListBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift
         n = ListBox1.ListIndex
         Set bk = ActiveDocument.Bookmarks(names(posName, n))
         Set bk = ブックマークの置換(bk)
+        If bk Is Nothing Then Exit Sub
         names(posName, n) = bk.name
         ListBox1.List(n, posName) = bk.name
        
@@ -197,7 +198,7 @@ End Sub
 Private Function 新ブックマーク名の取得(old_name As String) As String
     
     Dim e As New ブックマーク名編集
-    e.候補 = old_name
+    e.候補設定 old_name
     e.Show vbModal
     新ブックマーク名の取得 = e.結果
     Unload e
