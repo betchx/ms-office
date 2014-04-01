@@ -397,6 +397,7 @@ With MainList().ListLevels(8)
             End If
     End With
 End Sub
+
  Sub メインリストリセットレベル9(Optional 単独更新 As Boolean = True)
     With MainList().ListLevels(9)
         .NumberFormat = "%9"
@@ -406,7 +407,7 @@ End Sub
         .Alignment = wdListLevelAlignLeft
         .TextPosition = MillimetersToPoints(10)
         .TabPosition = MillimetersToPoints(10)
-        .ResetOnHigher = 1
+        .ResetOnHigher = 5
         .StartAt = 1
         With .Font
             .Bold = wdUndefined
